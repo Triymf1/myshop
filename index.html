@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Магазин - Товары с доставкой</title>
+    <title>Мій Магазин - Товари з доставкою</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
         }
         
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0057B7 0%, #FFD700 100%);
             color: white;
             padding: 20px;
             text-align: center;
@@ -35,7 +35,7 @@
             top: 20px;
             right: 20px;
             background: white;
-            color: #667eea;
+            color: #0057B7;
             padding: 15px;
             border-radius: 50%;
             cursor: pointer;
@@ -97,7 +97,7 @@
         
         .price {
             font-size: 24px;
-            color: #667eea;
+            color: #0057B7;
             font-weight: bold;
             margin-bottom: 15px;
         }
@@ -105,7 +105,7 @@
         .btn {
             width: 100%;
             padding: 12px;
-            background: #667eea;
+            background: #0057B7;
             color: white;
             border: none;
             border-radius: 8px;
@@ -115,7 +115,7 @@
         }
         
         .btn:hover {
-            background: #5568d3;
+            background: #004494;
         }
         
         .cart-modal {
@@ -146,7 +146,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            border-bottom: 1px solid #eee;
+            border-border-bottom: 1px solid #eee;
         }
         
         .cart-item button {
@@ -163,7 +163,7 @@
             font-weight: bold;
             margin: 20px 0;
             text-align: right;
-            color: #667eea;
+            color: #0057B7;
         }
         
         .order-form {
@@ -199,8 +199,8 @@
 </head>
 <body>
     <header>
-        <h1>🛍️ Мой Интернет-Магазин</h1>
-        <p>Качественные товары с быстрой доставкой</p>
+        <h1>🛍️ Мій Інтернет-Магазин</h1>
+        <p>Якісні товари зі швидкою доставкою</p>
     </header>
     
     <div class="cart-icon" onclick="openCart()">
@@ -214,33 +214,33 @@
     <div class="cart-modal" id="cart-modal">
         <div class="cart-content">
             <span class="close-btn" onclick="closeCart()">&times;</span>
-            <h2>Корзина</h2>
+            <h2>Кошик</h2>
             <div id="cart-items"></div>
-            <div class="cart-total">Итого: <span id="total">0</span> ₽</div>
+            <div class="cart-total">Всього: <span id="total">0</span> грн</div>
             
             <div class="order-form">
-                <h3>Оформление заказа</h3>
-                <input type="text" id="name" placeholder="Ваше имя" required>
+                <h3>Оформлення замовлення</h3>
+                <input type="text" id="name" placeholder="Ваше ім'я" required>
                 <input type="tel" id="phone" placeholder="Телефон" required>
-                <input type="text" id="address" placeholder="Адрес доставки" required>
-                <textarea id="comment" placeholder="Комментарий к заказу" rows="3"></textarea>
-                <button class="btn" onclick="submitOrder()">Оформить заказ</button>
+                <input type="text" id="address" placeholder="Адреса доставки" required>
+                <textarea id="comment" placeholder="Коментар до замовлення" rows="3"></textarea>
+                <button class="btn" onclick="submitOrder()">Оформити замовлення</button>
             </div>
             
             <div class="success-message" id="success">
-                ✅ Спасибо за заказ! Мы свяжемся с вами в ближайшее время.
+                ✅ Дякуємо за замовлення! Ми зв'яжемось з вами найближчим часом.
             </div>
         </div>
     </div>
 
     <script>
         const products = [
-            {id: 1, name: 'Беспроводные наушники', price: 1990, emoji: '🎧', description: 'Качественный звук, долгая работа'},
-            {id: 2, name: 'Умные часы', price: 3490, emoji: '⌚', description: 'Мониторинг здоровья, уведомления'},
-            {id: 3, name: 'Повербанк 20000mAh', price: 1490, emoji: '🔋', description: 'Быстрая зарядка, компактный'},
-            {id: 4, name: 'Чехол для телефона', price: 490, emoji: '📱', description: 'Защита от ударов и царапин'},
-            {id: 5, name: 'Bluetooth колонка', price: 2490, emoji: '🔊', description: 'Мощный звук, водозащита'},
-            {id: 6, name: 'Селфи-палка', price: 690, emoji: '🤳', description: 'Компактная, с Bluetooth'},
+            {id: 1, name: 'Бездротові навушники', price: 790, emoji: '🎧', description: 'Якісний звук, довга робота'},
+            {id: 2, name: 'Розумний годинник', price: 1390, emoji: '⌚', description: 'Моніторинг здоров\'я, сповіщення'},
+            {id: 3, name: 'Повербанк 20000mAh', price: 590, emoji: '🔋', description: 'Швидка зарядка, компактний'},
+            {id: 4, name: 'Чохол для телефону', price: 190, emoji: '📱', description: 'Захист від ударів та подряпин'},
+            {id: 5, name: 'Bluetooth колонка', price: 990, emoji: '🔊', description: 'Потужний звук, водозахист'},
+            {id: 6, name: 'Селфі-палиця', price: 270, emoji: '🤳', description: 'Компактна, з Bluetooth'},
         ];
         
         let cart = [];
@@ -253,8 +253,8 @@
                     <div class="product-info">
                         <h3>${p.name}</h3>
                         <p>${p.description}</p>
-                        <div class="price">${p.price} ₽</div>
-                        <button class="btn" onclick="addToCart(${p.id})">В корзину</button>
+                        <div class="price">${p.price} грн</div>
+                        <button class="btn" onclick="addToCart(${p.id})">До кошика</button>
                     </div>
                 </div>
             `).join('');
@@ -290,11 +290,11 @@
                 <div class="cart-item">
                     <div>
                         <strong>${item.name}</strong><br>
-                        ${item.price} ₽ × ${item.quantity}
+                        ${item.price} грн × ${item.quantity}
                     </div>
-                    <button onclick="removeFromCart(${item.id})">Удалить</button>
+                    <button onclick="removeFromCart(${item.id})">Видалити</button>
                 </div>
-            `).join('') || '<p style="text-align:center; padding:20px;">Корзина пуста</p>';
+            `).join('') || '<p style="text-align:center; padding:20px;">Кошик порожній</p>';
         }
         
         function openCart() {
@@ -311,17 +311,16 @@
             const address = document.getElementById('address').value;
             
             if (!name || !phone || !address) {
-                alert('Пожалуйста, заполните все обязательные поля');
+                alert('Будь ласка, заповніть всі обов\'язкові поля');
                 return;
             }
             
             if (cart.length === 0) {
-                alert('Корзина пуста');
+                alert('Кошик порожній');
                 return;
             }
             
-            // Здесь вы можете отправить данные на свой сервер или в Telegram
-            console.log('Заказ:', {name, phone, address, cart});
+            console.log('Замовлення:', {name, phone, address, cart});
             
             document.getElementById('success').style.display = 'block';
             cart = [];
@@ -340,4 +339,4 @@
         renderProducts();
     </script>
 </body>
-</html>
+    </html>
