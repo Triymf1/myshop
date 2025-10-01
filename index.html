@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -118,6 +119,11 @@
             background: #004494;
         }
         
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
         .cart-modal {
             display: none;
             position: fixed;
@@ -146,7 +152,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            border-border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eee;
         }
         
         .cart-item button {
@@ -195,6 +201,16 @@
             text-align: center;
             margin-top: 20px;
         }
+        
+        .error-message {
+            display: none;
+            background: #ff4757;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -224,16 +240,23 @@
                 <input type="tel" id="phone" placeholder="Телефон" required>
                 <input type="text" id="address" placeholder="Адреса доставки" required>
                 <textarea id="comment" placeholder="Коментар до замовлення" rows="3"></textarea>
-                <button class="btn" onclick="submitOrder()">Оформити замовлення</button>
+                <button class="btn" id="submitBtn" onclick="submitOrder()">Оформити замовлення</button>
             </div>
             
             <div class="success-message" id="success">
                 ✅ Дякуємо за замовлення! Ми зв'яжемось з вами найближчим часом.
             </div>
+            
+            <div class="error-message" id="error">
+                ❌ Помилка відправки. Спробуйте ще раз або зв'яжіться з нами напряму.
+            </div>
         </div>
     </div>
 
     <script>
+        const TELEGRAM_BOT_TOKEN = '8330056742:AAH7S7_8kPuxhFJgWbJqa165tjyv0dVL1uU';
+        const TELEGRAM_CHAT_ID = '6680161665';
+        
         const products = [
             {id: 1, name: 'Бездротові навушники', price: 790, emoji: '🎧', description: 'Якісний звук, довга робота'},
             {id: 2, name: 'Розумний годинник', price: 1390, emoji: '⌚', description: 'Моніторинг здоров\'я, сповіщення'},
@@ -305,10 +328,11 @@
             document.getElementById('cart-modal').style.display = 'none';
         }
         
-        function submitOrder() {
+        async function submitOrder() {
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
+            const comment = document.getElementById('comment').value;
             
             if (!name || !phone || !address) {
                 alert('Будь ласка, заповніть всі обов\'язкові поля');
@@ -320,23 +344,65 @@
                 return;
             }
             
-            console.log('Замовлення:', {name, phone, address, cart});
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Відправка...';
             
-            document.getElementById('success').style.display = 'block';
-            cart = [];
-            updateCart();
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const orderItems = cart.map(item => 
+                `${item.name} - ${item.price} грн × ${item.quantity} = ${item.price * item.quantity} грн`
+            ).join('\n');
             
-            setTimeout(() => {
-                closeCart();
+            const message = `🛍️ НОВЕ ЗАМОВЛЕННЯ!\n\n` +
+                `👤 Ім'я: ${name}\n` +
+                `📞 Телефон: ${phone}\n` +
+                `📍 Адреса: ${address}\n` +
+                `${comment ? `💬 Коментар: ${comment}\n` : ''}` +
+                `\n📦 Товари:\n${orderItems}\n\n` +
+                `💰 ВСЬОГО: ${total} грн`;
+            
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('success').style.display = 'block';
+                    document.getElementById('error').style.display = 'none';
+                    cart = [];
+                    updateCart();
+                    
+                    setTimeout(() => {
+                        closeCart();
+                        document.getElementById('success').style.display = 'none';
+                        document.getElementById('name').value = '';
+                        document.getElementById('phone').value = '';
+                        document.getElementById('address').value = '';
+                        document.getElementById('comment').value = '';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Оформити замовлення';
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('error').style.display = 'block';
                 document.getElementById('success').style.display = 'none';
-                document.getElementById('name').value = '';
-                document.getElementById('phone').value = '';
-                document.getElementById('address').value = '';
-                document.getElementById('comment').value = '';
-            }, 3000);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Оформити замовлення';
+            }
         }
         
         renderProducts();
     </script>
 </body>
-    </html>
+</html>
